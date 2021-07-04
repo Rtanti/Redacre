@@ -1,0 +1,27 @@
+version: '3'
+services:
+  web:
+    container_name: "react_frontend"
+    build: ./sys-stats/ 
+    image: "redacre/frontend:latest"
+    ports:
+      - "3000:3000"
+    volumes:
+      - ./sys-stats:/srv/redacre/frontend
+  backend:
+    container_name: "python_backend"
+    image: "redacre/backend:latest"
+    build: ./api/
+    ports:
+      - "5000:5000"
+      - "80:80"
+    volumes:
+      - ./api:/srv/redacre/api
+  proxy:
+    container_name: "haproxy"
+    build: ./proxy/
+    image: "redacre/proxy:latest"
+    volumes:
+      - ./proxy:/srv/redacre/proxy
+
+
