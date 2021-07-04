@@ -1,0 +1,50 @@
+apiVersion: v1
+kind: Service
+metadata: 
+  name: flask
+spec:
+  type: ClusterIP
+  selector:
+    component: backendpython
+  ports:
+    - port: 5000 
+      targetPort: 5000
+---
+apiVersion: v1
+kind: Service
+metadata: 
+  name: flask-api-cluster
+  labels:
+    backend: flaskapi
+spec:
+  type: ClusterIP
+  selector:
+    component: backendpython
+  ports:
+    - port: 5000 
+      targetPort: 5000
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: backend-python
+  labels:
+    app: backendpython
+spec:
+  selector:
+    matchLabels:
+      app: backendpython
+  replicas: 3
+  strategy:
+    type: RollingUpdate
+  template:
+    metadata:
+      labels:
+        app: backendpython
+    spec:
+      containers:
+      - name: pythonbackend
+        image: redacre/backend:latest
+        imagePullPolicy: Never
+        ports:
+        - containerPort: 5000
