@@ -1,6 +1,6 @@
 version: '3'
 services:
-  web:
+  frontend:
     container_name: "react_frontend"
     build: ./sys-stats/ 
     image: "redacre/frontend:latest"
