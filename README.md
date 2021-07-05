@@ -80,7 +80,7 @@ services:
 ```
 
 # Task 2 Unavailable
-Unfortunately for some reason both my AWS accounts were suspended and I heard from their support team today and still in the process of getting them enabled again. 
+Unfortunately for some reason both my AWS accounts were suspended and I heard from their support team today and still in the process of getting them enabled again. Due to the amount of time task 3 took, I was unable to try a different cloud provider. 
 
 # Task 3
 ## What is needed?
@@ -88,10 +88,20 @@ Kubernetes, docker, minikube
 
 ## How to
 For the frontend, a load balancer service was created along the nodejs app in order to service requests to it, and forward to the necessary ports.
+
 For the backend, a Cluster IP to expose the port within the cluster, and a NodePort to expose it to machines outside of the cluster (such as the internet or host VM).
 
 ### Notes
 Had to change the image of the frontend to include nginx and remove the haproxy container, as it seems to be the suggested way to implement it. Still in the end I was unable to get it working. Might be due to some port forwarding issues with my virtualbox as I was able to curl the python api from inside my virtual machine. 
+
+For minikube to pick up the images, you first have to run the following command then build the images `eval $(minikube docker-env)`. This is done so docker env variables are loaded inside the minikube instance. 
+
+So from inside task3 directory, build the images: 
+
+`docker build -t redacre/frontend sys-stats/`
+`docker build -t redacre/backend api/`
+then run `eval $(minikube docker-env)`
+
 Used the `Never` policy for the `imagePullPolicy` since the images are stored locally and not on github. Therefore if you don't set it to Never it will try to pull them from the internet.
 
 ## How to run
